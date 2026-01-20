@@ -1,14 +1,16 @@
-﻿namespace GestorProduto
+﻿using System.ComponentModel.Design;
+
+namespace GestorProduto
 {
     class Program
     {
-        static List<Produto> produtos = new List<Produto>();
+        
 
         static void Main(string[] args)
         {
-            bool continuar = true;
-
-            while (continuar)
+            bool menu = true;
+            
+            do
             {
                 Console.WriteLine("\nEscolha uma opção:");
                 Console.WriteLine("1 - Cadastrar Produto");
@@ -29,101 +31,31 @@
                 switch (opcao)
                 {
                     case 1:
-                        CadastrarProduto();
+                        Produto.CadastrarProduto();
                         break;
 
                     case 2:
-                        RemoverProduto();
+                        Produto.RemoverProduto();
                         break;
 
                     case 3:
-                        EditarProduto();
+                        Produto.EditarProduto();
                         break;
 
                     case 4:
-                        ListarProdutos();
+                        Produto.ListarProdutos();
                         break;
 
                     case 5:
-                        continuar = false;
+                        menu = false;
                         break;
 
                     default:
                         Console.WriteLine("Opção inválida.");
                         break;
                 }
-            }
-
-
-            static void CadastrarProduto()
-            {
-                Console.Write("\nDigite o nome do produto: ");
-                string nome = Console.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(nome))
-                {
-                    Console.WriteLine("O Nome não pode conter apenas espaços vazios.");
-                    return;
-                }
-
-                int id = produtos.Count + 1;
-
-                Produto produto = new Produto(id, nome);
-                produtos.Add(produto);
-                Console.WriteLine("\nProduto cadastrado com sucesso!");
-            }
-
-
-            static void RemoverProduto()
-            {
-                Console.Write("\nDigite o ID do produto que deseja remover: ");
-                int idRemover = int.Parse(Console.ReadLine());
-
-                Produto produtoRemover = produtos.Find(p => p.Id == idRemover);
-
-                if (produtoRemover != null)
-                {
-                    produtos.Remove(produtoRemover);
-                    Console.WriteLine("\nProduto removido com sucesso!");
-                }
-                else
-                {
-                    Console.WriteLine("\nProduto não encontrado.");
-                }
-            }
-
-
-            static void EditarProduto()
-            {
-                Console.Write("\nDigite o ID do produto que deseja editar:");
-                int idEditar = int.Parse(Console.ReadLine());
-
-                Produto produtoEditar = produtos.Find(p => p.Id == idEditar);
-
-                if (produtoEditar != null)
-                {
-                    Console.Write("\nDigite o novo nome do produto: ");
-                    string novoNome = Console.ReadLine();
-
-                    produtoEditar.Nome = novoNome;
-                    Console.WriteLine("\nProduto editado com sucesso!");
-                }
-                else
-                {
-                    Console.WriteLine("\nProduto não encontrado.");
-                }
-            }
-
-
-            static void ListarProdutos()
-            {
-                Console.WriteLine("\nLista de Produtos:");
-                foreach (Produto produto in produtos)
-                {
-                    Console.WriteLine($"\nNome: {produto.Nome}");
-                    Console.WriteLine($"ID: {produto.Id}");
-                }
-            }
+            } while (menu);
+            
         }
     }
 }
