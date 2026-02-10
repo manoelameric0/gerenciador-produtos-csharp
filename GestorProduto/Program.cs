@@ -8,9 +8,11 @@ namespace GestorProduto
 
         static void Main(string[] args)
         {
-            bool menu = true;
-            var manage = new ProdutoManager();
+            bool executando = true;
+            var gestor = new ProdutoManager();
             
+            Console.WriteLine("\n===Bem Vindo ao Sistema Gestor de Produtos===");
+
             do
             {
                 Console.WriteLine("\nEscolha uma opção:");
@@ -21,37 +23,39 @@ namespace GestorProduto
                 Console.WriteLine("5 - Sair");
                 Console.Write("\nDigite a sua opção: ");
 
-                 int entrada = manage.LerInt();
+                 int entrada = gestor.LerInt();
+
+                 //cast de int para enum
                  Menu opcao = (Menu)entrada;
                 
 
                 switch (opcao)
                 {
                     case Menu.Cadastrar:
-                        manage.CadastrarProduto();
+                        gestor.CadastrarProduto();
                         break;
 
                     case Menu.Remover:
-                        manage.RemoverProduto();
+                        gestor.RemoverProduto();
                         break;
 
                     case Menu.Editar:
-                        manage.EditarProduto();
+                        gestor.EditarProduto();
                         break;
 
                     case Menu.Listar:
-                        manage.ListarProdutos();
+                        gestor.ListarProdutos();
                         break;
 
                     case Menu.Sair:
-                        menu = false;
+                        executando = false;
                         break;
 
                     default:
                         Console.WriteLine("Opção inválida.");
                         break;
                 }
-            } while (menu);
+            } while (executando);
             
         }
     }

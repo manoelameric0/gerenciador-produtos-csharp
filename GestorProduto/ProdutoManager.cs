@@ -3,20 +3,24 @@ using System.Net.Security;
 
 namespace GestorProduto;
 
-public enum Menu {Cadastrar = 1, Remover = 2, Editar = 3, Listar = 4, Sair = 5}
+//Menu com enum
+public enum Menu { Cadastrar = 1, Remover = 2, Editar = 3, Listar = 4, Sair = 5 }
 
 public class ProdutoManager
 {
-    public  List<Produto> produtos = new List<Produto>();
+    //Lista de produtos
+    public List<Produto> produtos = new List<Produto>();
 
-    
 
+    //Ações
     public void CadastrarProduto()
     {
         Console.Write("\nDigite o nome do produto: ");
-         string nome = LerString();
+        string nome = LerString();
 
+        nome = LerNomeDuplicado(nome);
         Console.Clear();
+
         produtos.Add(new Produto(Guid.NewGuid(), nome));
         Console.WriteLine("\nProduto cadastrado com sucesso!");
     }
@@ -40,7 +44,7 @@ public class ProdutoManager
         }
     }
 
-     public void EditarProduto()
+    public void EditarProduto()
     {
         Console.Write("\nDigite o ID do produto que deseja editar:");
         Guid idEditar = LerID();
@@ -52,6 +56,8 @@ public class ProdutoManager
             Console.Write("\nDigite o novo nome do produto: ");
             string novoNome = LerString();
 
+            novoNome = LerNomeDuplicado(novoNome);
+
             produtoEditar.SetName(novoNome);
             Console.WriteLine("\nProduto editado com sucesso!");
         }
@@ -61,7 +67,7 @@ public class ProdutoManager
         }
     }
 
-     public void ListarProdutos()
+    public void ListarProdutos()
     {
         Console.WriteLine("\nLista de Produtos:");
         if (produtos.Count == 0)
@@ -72,7 +78,7 @@ public class ProdutoManager
         {
             Console.WriteLine($"\nNome: {produto.Nome}");
             Console.WriteLine($"ID: {produto.Id}");
-            
+
         }
     }
 
@@ -84,7 +90,7 @@ public class ProdutoManager
         while (string.IsNullOrWhiteSpace(entrada) || string.IsNullOrEmpty(entrada) || entrada.Any(char.IsDigit))
         {
             System.Console.WriteLine("Nome Inválido!");
-            System.Console.Write("Nome: ");
+            System.Console.Write("\nDigite o nome do produto:  ");
             entrada = Console.ReadLine();
         }
 
@@ -94,23 +100,48 @@ public class ProdutoManager
     public Guid LerID()
     {
         Guid entrada;
-        
+
         while (!Guid.TryParse(Console.ReadLine(), out entrada))
         {
             System.Console.WriteLine("Número inválido");
         }
 
-        
+
         return entrada;
     }
 
     public int LerInt()
     {
         int entrada;
-        while(!int.TryParse(Console.ReadLine(), out entrada))
+        while (!int.TryParse(Console.ReadLine(), out entrada))
         {
             System.Console.WriteLine("Caractere inválido");
+            Console.Write("\nDigite a sua opção: ");
         }
         return entrada;
+    }
+
+    public bool NomeDuplicado(string entrada)
+    {
+        Produto produto = produtos.Find(p => p.Nome == entrada);
+        if (produto == null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public string LerNomeDuplicado(string nome)
+    {
+
+        while (NomeDuplicado(nome))
+        {
+            System.Console.WriteLine("Esse Nome de Produto Já Existe no Sistema!");
+            Console.Write("\nDigite o nome do produto: ");
+            nome = LerString();
+        }
+
+        return nome;
     }
 }
